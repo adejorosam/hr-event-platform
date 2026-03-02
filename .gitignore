@@ -1,3 +1,6 @@
 .DS_Store
 .env
 *.log
+docker/
+hr-service/README.md
+hub-service/README.md
