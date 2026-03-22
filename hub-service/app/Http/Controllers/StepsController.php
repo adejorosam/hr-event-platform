@@ -3,51 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CountryRequest;
+use App\Services\Steps\StepsService;
 use Illuminate\Http\JsonResponse;
 
 class StepsController extends Controller
 {
-    private const STEPS = [
-        'USA' => [
-            [
-                'id' => 'dashboard',
-                'label' => 'Dashboard',
-                'icon' => 'dashboard',
-                'path' => '/dashboard',
-                'order' => 1,
-            ],
-            [
-                'id' => 'employees',
-                'label' => 'Employees',
-                'icon' => 'people',
-                'path' => '/employees',
-                'order' => 2,
-            ],
-        ],
-        'Germany' => [
-            [
-                'id' => 'dashboard',
-                'label' => 'Dashboard',
-                'icon' => 'dashboard',
-                'path' => '/dashboard',
-                'order' => 1,
-            ],
-            [
-                'id' => 'employees',
-                'label' => 'Employees',
-                'icon' => 'people',
-                'path' => '/employees',
-                'order' => 2,
-            ],
-            [
-                'id' => 'documentation',
-                'label' => 'Documentation',
-                'icon' => 'description',
-                'path' => '/documentation',
-                'order' => 3,
-            ],
-        ],
-    ];
+    public function __construct(
+        private readonly StepsService $stepsService
+    ) {}
 
     public function index(CountryRequest $request): JsonResponse
     {
@@ -55,7 +18,7 @@ class StepsController extends Controller
 
         return response()->json([
             'country' => $country,
-            'steps' => self::STEPS[$country] ?? [],
+            'steps'   => $this->stepsService->getSteps($country),
         ]);
     }
 }
